@@ -1,75 +1,141 @@
-# 꿈꿔왔던 사이드 프로젝트가 시작되는 곳, Coco!
+# CoCo
 ![CocoBanner2](https://user-images.githubusercontent.com/103922744/180134172-04dda2fd-bebd-48ef-9a1c-77ae638b4979.jpg)
 <br>
 <br>
 
-## 📢 목차
-* [소개](#코코-소개)
-* [기능](#기능)
-* [구성](#구성)
-* [기술 스택](#기술-스택)
-* [과정](#과정)
-* [미리보기](#페이지-미리보기)
-  <br>
-  <br>
+## 1. 프로젝트 개요
+- 제작기간: 2022.06.24 ~ 2022.07.29
+- 참여인원: 4명
+- 주제: 사이드 프로젝트 구인 플랫폼
+- 기획의도: 원하는 사이드 프로젝트를 기획하고 함께할 인원을 모집할 수 있는 플랫폼
 
-## 코코 소개
-### 직접 만들어보고 싶은 사이드 프로젝트가 있으신가요? 그렇다면, Coco를 찾아주세요!
-프로젝트를 직접 기획하거나, 원하는 프로젝트를 찾아 프로젝트에 참여해보시는건 어떠세요?  
-그 프로젝트의 첫 시작, [Coco](https://www.cocoding.xyz)가 함께하고 싶어요 🙋🏻‍♀️ 🙋🏻 🙋🏻‍♂️
+<br>
 
-- 프로젝트 기획시 원하는 팀원을 모집할 수 있습니다.
-- 원하는 프로젝트가 있다면 팀원으로 참여할 수 있습니다.
-  <br>
-  <br>
+## 2. 사용기술
+**Backend**
+- Java 11
+- Spring Boot 2.7.1
+- Gradle
+- Spring Data JPA
+- Spring Security
+- Java JWT
 
-## 기능
-| 카테고리 |                기능                 | 기능 내용                                                       |
-| :------: |:---------------------------------:|:------------------------------------------------------------|
-| 회원 | 로그인/로그아웃 </br> 회원가입/탈퇴 </br> 관리자  | 회원가입시/ 이메일,닉네임 중복확인 </br> 이메일, 비밀번호 유효성 검사 </br> 비밀번호 난수화   |
-| 게시글 |               CRUD                | 게시글 작성/읽기/수정/삭제 </br> 글 작성 유저 프로필 보기 </br> 글 작성 유저에게 쪽지 보내기 |
-| 쪽지 |                CRD                | 쪽지보내기 </br> 쪽지 읽지 않음/읽음 표시 </br> 쪽지 삭제 </br> 받은 쪽지 보기       |
-| 댓글 |                CRD                | 댓글 작성 </br> 댓글 삭제 </br> 댓글 리스트 보기                           |
-| 프로필 |                RU                 | 프로필 보기 </br> 프로필 수정                                         |
-| 북마크 |                CRD                | 북마크 저장 </br> 북마크 삭제 </br> 북마크 리스트 보기                        |
-| 필터 |              게시글 필터               | 게시글 모집중 / 모집완료 필터                                           |
+**Database**
+-  AWS RDS (MySQL)
+
+**Infra**
+- AWS ELB
+- AWS EC2
+- AWS S3
+- AWS CloudFront
+
+**CI/CD**
+- Github Action
+
+**Frontend**
+- HTML5
+- CSS3
+- JavaScript
+- Bulma
+- JQuery
+- Webpack
+- Node.js
+
+<br>
+
+## 3. ERD 설계
+![수정  CoCo (1)](https://user-images.githubusercontent.com/59812251/183559776-06765c85-f5fe-43e9-bc06-587140dc316a.png)
+
+<br>
+
+## 4. 아키텍쳐 설계
+<img width="1549" alt="스크린샷 2022-08-09 오후 2 20 22" src="https://user-images.githubusercontent.com/59812251/183570700-46ce5b35-9676-45bc-839a-6556162d3f66.png">
+
+<br>
+
+## 5. 기여한 기능
+#### 담당한 기능: 회원 관련 기능 / 게시글 관련 기능
+- 회원가입 기능
+- 로그인, 로그아웃 기능
+- 게시글 CURD
+- 게시글 필터 기능
+- 게시글 검색 기능
+
+<br>
+
+## 6. 기억에 남는 기능
+<details>
+<summary>6-1. JWT를 사용한 로그인 기능</summary>
+<div markdown="1">
+
+<h3>선정한 이유</h3>
+
+- 배우지 않은 부분을 맡게 되었고, 열심히 구글링을 통해 해결한 기능입니다.
+- refresh Token은 적용하지 못해 반쪽짜리 기능이지만, 배우지 않은 부분도 구글링을 통해 해결 할 수 있다는 생각을 갖게 해준 기능이라 선정했습니다.
+
+<br>
+
+<h3>흐름</h3>
+
+<h4>로그인)</h4>
+
+![JWT로그인1](https://user-images.githubusercontent.com/59812251/183603074-169a74c9-d6f6-418f-b18b-ffcc1dba57df.png)
+
+- 중복된 회원정보가 있는지, 비밀번호가 틀리진 않았는지를 검사하고 통과하면, JWT 토큰을 클라이언트에 발급합니다.
+
+
+📌 [MemberController 코드확인](https://github.com/kangwongu/CoCoBackend/blob/main/src/main/java/com/igocst/coco/controller/MemberController.java#L25-L30)
+
+📌 [MemberService 코드확인](https://github.com/kangwongu/CoCoBackend/blob/main/src/main/java/com/igocst/coco/service/MemberService.java#L51-L87)
+
+📌 [JwtTokenProvider 코드확인](https://github.com/kangwongu/CoCoBackend/blob/main/src/main/java/com/igocst/coco/security/jwt/JwtTokenProvider.java#L29-L40)
+
+📌 [MemberRepository 코드확인](https://github.com/kangwongu/CoCoBackend/blob/main/src/main/java/com/igocst/coco/repository/MemberRepository.java)
+
 <br>
 <br>
 
-## 구성
-#### Architecture Version 1
-<img width="948" alt="아키텍처 ver1 5" src="https://user-images.githubusercontent.com/103922744/180138551-c0171505-641b-436b-820e-30d56fef0423.png">
-<br>
-<br>
+<h4>토큰 검증)</h4>
 
-## 기술 스택
-| Backend | <img src="https://img.shields.io/badge/JAVA-E85C33?style=for-the-badge&logo=Python&logoColor=white">  <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white"> <img src="https://img.shields.io/badge/Spring Security-137CBD?style=for-the-badge&logo=Spring Security&logoColor=white"> <img src="https://img.shields.io/badge/Gradle-02303A?style=for-the-badge&logo=Gradle&logoColor=white"> <img src="https://img.shields.io/badge/JPA-E97627?style=for-the-badge&logo=JPA&logoColor=white">                                                                                                                                                                                                    |
-| ------ |:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Frontend | <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white"> <img src="https://img.shields.io/badge/Webpack-8DD6F9?style=for-the-badge&logo=Webpack&logoColor=white"> <img src="https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jQuery&logoColor=white"> <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white"> <img src="https://img.shields.io/badge/Bulma-00D1B2?style=for-the-badge&logo=Bulma&logoColor=white"> <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=HTML5&logoColor=white"> <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=CSS3&logoColor=white">       |
-| DB | <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| CLOUD | <img src="https://img.shields.io/badge/Amazon AWS-232F3E?style=for-the-badge&logo=Amazon AWS&logoColor=white"> <img src="https://img.shields.io/badge/Amazon Amazon S3-569A31?style=for-the-badge&logo=Amazon Amazon S3&logoColor=white"> <img src="https://img.shields.io/badge/Amazon Amazon RDS-527FFF?style=for-the-badge&logo=Amazon Amazon RDS&logoColor=white"> <img src="https://img.shields.io/badge/Amazon Amazon EC2-FF9900?style=for-the-badge&logo=Amazon Amazon EC2&logoColor=white">                                                                                                                                                                                                                                                        |
-| ETC | <img src="https://img.shields.io/badge/Amazon Git-F05032?style=for-the-badge&logo=Amazon Git&logoColor=white"> <img src="https://img.shields.io/badge/Amazon GitHub-181717?style=for-the-badge&logo=Amazon GitHub&logoColor=white"> <img src="https://img.shields.io/badge/GitHub Actions-2088FF?style=for-the-badge&logo=GitHub Actions&logoColor=white">                                                                                                                                                                                                                                                                                                                                                                                                 |
-<br>
-<br>
+![JWT로그인2](https://user-images.githubusercontent.com/59812251/183603045-e9eb7703-62bb-45d7-9a1d-e08dd0949b11.png)
 
-## 과정
-
-| Week |           기간            |       목표        | 보완 | 내용                                                                   |
-| ---- |:-----------------------:|:---------------:|----|:---------------------------------------------------------------------|
-| 1주차 | 06/27/2022 - 07/01/2022 |      CRUD       |       ☑️        | 프로젝트 설계 </br> 게시글/쪽지/댓글 CRUD 기능 구현                                   |
-| 2주차 | 07/04/2022 - 07/08/2022 | SPRING SECURITY |     ☑️     | JWT </br> Spring Security </br> Frontend - Backend 연결 </br> 서비스 기능 추가|
-| 3주차 | 07/11/2022 - 07/15/2022 |       AWS       |         ☑️          | AWS 배포 준비 </br> 서비스 기능 추가 </br> 예외처리                                 |
-| 4주차 | 07/18/2022 - 07/22/2022 |      배포준비       |       ☑️        | Logback </br> </br> 예외처리 </br> 코드 정리 </br> 배포(피드백 받을) 준비             |
-| 5주차 | 07/25/2022 - 07/29/2022 |   피드백 + 리팩토링    |                 | 배포 후 수정                                                              |
+- 시큐리티 클래스에 JWT 필터를 등록했습니다.
+- 임의로 열어둔 URL을 제외한 모든 요청에서 JWT 토큰의 유효성을 검증합니다.
+  - 토큰이 유효하면, 로그인된 사용자 정보가 Controller로 넘어가고, 이를 사용할 수 있습니다.
 
 
-<br>
+📌 [JwtAuthenticationFilter 코드확인](https://github.com/kangwongu/CoCoBackend/blob/main/src/main/java/com/igocst/coco/security/filter/JwtAuthenticationFilter.java)
+
+📌 [JwtTokenProvider 코드확인](https://github.com/kangwongu/CoCoBackend/blob/main/src/main/java/com/igocst/coco/security/jwt/JwtTokenProvider.java#L42-L96)
+
+📌 [SecurityConfiguration 코드확인](https://github.com/kangwongu/CoCoBackend/blob/main/src/main/java/com/igocst/coco/security/SecurityConfiguration.java#L80-L81)
+
+📌 [MemberDetailsService 코드확인](https://github.com/kangwongu/CoCoBackend/blob/main/src/main/java/com/igocst/coco/security/MemberDetailsService.java)
+
+</div>
+</details>
+<details>
+<summary>6-2. 게시글 필터 기능 (댓글 많은 순)</summary>
+<div markdown="1">
+
+<h3>선정한 이유</h3>
+
+- 사용자 피드백 중, 게시글을 정렬하는 필터 기능이 있었으면 좋겠다는 피드백을 받았고, 이를 반영하기 위한 만든 기능입니다.
+- 댓글수가 많은 순서대로 게시글을 정렬해야 하는 부분을 어떻게 해결해야 하는지 고민하다가, 정렬 알고리즘인 버블 정렬을 활용하여 문제를 해결했습니다.  
+좋은 해결방안임은 확신할 수 없지만, 이전에 배웠던 정렬 알고리즘을 활용하여 문제를 해결할 수 있었던 점이 기억에 남아 선정하게 되었습니다.
+
 <br>
 
-## 페이지-미리보기
-(PC, Mobile Image 추가 예정)
-<br>
-<br>
+<h3>흐름</h3>
 
-## API 명세
-- [Coco API 명세를 보고싶으신가요? 여기를 클릭해주세요](https://equatorial-scooter-0d6.notion.site/API-c4e8d55b8ce54b0c99bd61881961e217)
+![댓글순 정렬](https://user-images.githubusercontent.com/59812251/183607255-12a174d4-ff67-463d-aa43-eda2d7b720c5.png)
+
+📌 [PostController 코드확인](https://github.com/kangwongu/CoCoBackend/blob/main/src/main/java/com/igocst/coco/controller/PostController.java#L66-L76)
+
+📌 [PostService 코드확인](https://github.com/kangwongu/CoCoBackend/blob/main/src/main/java/com/igocst/coco/service/PostService.java#L266-L338)
+
+📌 [PostRepository 코드확인](https://github.com/kangwongu/CoCoBackend/blob/77dcb6b55af6b6b02587e03919dfde0bc77a3f49/src/main/java/com/igocst/coco/repository/PostRepository.java#L17)
+
+
+</div>
+</details>
