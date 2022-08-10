@@ -195,7 +195,12 @@
 
 <br>
 
-#### :bulb: 기존 방식
+
+<details>
+<summary><b>:bulb: 기존 방식</b></summary>
+<div markdown="1">
+
+<br>
 
 기존에 조회수 증가 로직은 아래와 같았습니다.
 
@@ -227,11 +232,17 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 ```
 
 - 특정 게시글 ID의 hits(조회 수)를 증가시킵니다.
-  - **특정 게시글 ID에 접근할 때마다 hits(조회 수)가 증가합니다**
+  - **특정 게시글 ID에 접근할 때마다 hits(조회 수)가 증가하는 문제가 발생합니다**
+</div>
+</details>
 
 <br>
 
-#### :bulb: 개선한 방식
+<details>
+<summary><b>:bulb: 개선한 방식</b></summary>
+<div markdown="1">
+
+<br>
 
 이렇게 조회 수가 중복으로 증가되는 문제를 해결하기 위해 메소드를 추가했습니다.
 
@@ -284,9 +295,13 @@ private void updateHits(Long postId, HttpServletRequest request, HttpServletResp
 
 📌 [변경 코드 확인](https://github.com/BreedingMe/CoCoBackend/pull/176/files)
 
-:bookmark: [블로그에 정리한 내용](https://velog.io/@kwg527/Spring-%EC%A1%B0%ED%9A%8C%EC%88%98-%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84-%EC%A1%B0%ED%9A%8C%EC%88%98-%EC%A4%91%EB%B3%B5-%EB%B0%A9%EC%A7%80)
+:bookmark: [블로그에 정리했던 내용](https://velog.io/@kwg527/Spring-%EC%A1%B0%ED%9A%8C%EC%88%98-%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84-%EC%A1%B0%ED%9A%8C%EC%88%98-%EC%A4%91%EB%B3%B5-%EB%B0%A9%EC%A7%80)
+
+</div>
+</details>
 
 <br>
+
 
 ### 배포 환경에서 쿠키 동작 문제
 
@@ -298,7 +313,11 @@ private void updateHits(Long postId, HttpServletRequest request, HttpServletResp
 
 <br>
 
-#### :bulb: 기존 방식
+<details>
+<summary><b>:bulb: 기존 방식</b></summary>
+<div markdown="1">
+
+<br>
 
 기존에 조회수 증가 로직은 아래와 같았습니다.
 로컬에서 테스트중이었고, oldCookie에 도메인을 설정해 주지 않은 상황입니다.
@@ -336,9 +355,16 @@ private void updateHits(Long postId, HttpServletRequest request, HttpServletResp
 ```
 - 로컬에서는 정상적으로 동작하지만, 배포 환경에서 테스트하니 쿠키가 동작하지 않는 문제가 발생하였습니다.
 
+</div>
+</details>
+
 <br>
 
-#### :bulb: 개선한 방식
+<details>
+<summary><b>:bulb: 개선한 방식</b></summary>
+<div markdown="1">
+
+<br>
 
 배포 환경에서 쿠키의 도메인을 설정해주지 않으면 내부 전용 쿠키가 되고 로컬에서만 적용된다는 문제점을 알게 되었습니다.  
 이를 해결하기 위해 쿠키의 도메인을 설정해 해당 도메인으로 쿠키를 전달하도록 개선하였습니다.
@@ -380,6 +406,9 @@ private void updateHits(Long postId, HttpServletRequest request, HttpServletResp
 📌 [변경 코드 확인](https://github.com/BreedingMe/CoCoBackend/pull/181/files#diff-48a80a6196151da0e8bc16802ba19988153fa471ed6f20d3fa61f0f094d867c4)
 
 :bookmark: [블로그에 정리한 내용](https://velog.io/@kwg527/Spring-AWS-%EB%B0%B0%ED%8F%AC-%ED%99%98%EA%B2%BD%EC%97%90%EC%84%9C-%EC%BF%A0%ED%82%A4-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0)
+
+</div>
+</details>
 
 <br>
 
