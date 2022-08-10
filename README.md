@@ -15,13 +15,13 @@
 **Backend**
 - Java 11
 - Spring Boot 2.7.1
-- Gradle
+- Gradle 7.4.1
 - Spring Data JPA
 - Spring Security
 - Java JWT
 
 **Database**
--  AWS RDS (MySQL)
+-  AWS RDS (MySQL 8.0.28)
 
 **Infra**
 - AWS ELB
@@ -178,7 +178,9 @@
 
 ## 7. 트러블 슈팅
 
-### 게시글 조회 수 중복 오류
+### 게시글 조회 수 중복 증가 
+
+:bookmark: [블로그에 정리했던 내용](https://velog.io/@kwg527/Spring-%EC%A1%B0%ED%9A%8C%EC%88%98-%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84-%EC%A1%B0%ED%9A%8C%EC%88%98-%EC%A4%91%EB%B3%B5-%EB%B0%A9%EC%A7%80)
 
 - 고객 피드백 내용
 
@@ -194,7 +196,6 @@
   - 쿠키의 만료시간을 1일로 설정하였고, 동일 IP에서 1일동안 동일한 게시글에 접근해도 조회 수가 계속 올라가지 않도록 했습니다.
 
 <br>
-
 
 <details>
 <summary><b>:bulb: 기존 방식</b></summary>
@@ -295,15 +296,14 @@ private void updateHits(Long postId, HttpServletRequest request, HttpServletResp
 
 📌 [변경 코드 확인](https://github.com/BreedingMe/CoCoBackend/pull/176/files)
 
-:bookmark: [블로그에 정리했던 내용](https://velog.io/@kwg527/Spring-%EC%A1%B0%ED%9A%8C%EC%88%98-%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84-%EC%A1%B0%ED%9A%8C%EC%88%98-%EC%A4%91%EB%B3%B5-%EB%B0%A9%EC%A7%80)
-
 </div>
 </details>
 
 <br>
 
-
 ### 배포 환경에서 쿠키 동작 문제
+
+:bookmark: [블로그에 정리했던 내용](https://velog.io/@kwg527/Spring-AWS-%EB%B0%B0%ED%8F%AC-%ED%99%98%EA%B2%BD%EC%97%90%EC%84%9C-%EC%BF%A0%ED%82%A4-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0)
 
 - 문제
   - 로컬 환경에서 테스트를 했을 때는 쿠키가 잘 동작하는데, 배포 환경에서는 쿠키가 클라이언트에 저장이 안되어서 조회 수 중복 방지 기능이 동작하지 않는 문제가 발생했습니다.
@@ -405,12 +405,23 @@ private void updateHits(Long postId, HttpServletRequest request, HttpServletResp
 
 📌 [변경 코드 확인](https://github.com/BreedingMe/CoCoBackend/pull/181/files#diff-48a80a6196151da0e8bc16802ba19988153fa471ed6f20d3fa61f0f094d867c4)
 
-:bookmark: [블로그에 정리한 내용](https://velog.io/@kwg527/Spring-AWS-%EB%B0%B0%ED%8F%AC-%ED%99%98%EA%B2%BD%EC%97%90%EC%84%9C-%EC%BF%A0%ED%82%A4-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0)
-
 </div>
 </details>
 
 <br>
 
-## 8. 회고 / 느낀 점
+## 8. 기타 개선한 부분
+
+📌 [Optional 사용](https://github.com/BreedingMe/CoCoBackend/wiki/Optional-%EC%82%AC%EC%9A%A9)  
+📌 [예외 처리](https://github.com/BreedingMe/CoCoBackend/wiki/%EC%98%88%EC%99%B8-%EC%B2%98%EB%A6%AC)  
+📌 [@Setter 사용하지 않기](https://github.com/BreedingMe/CoCoBackend/wiki/@Setter-%EC%82%AC%EC%9A%A9%ED%95%98%EC%A7%80-%EC%95%8A%EA%B8%B0)
+
+<br>
+
+## 9. 회고 / 느낀 점
 > [최종 프로젝트 회고](https://velog.io/@kwg527/%ED%9A%8C%EA%B3%A0-%EB%82%B4%EB%B0%B0%EC%BA%A0-%EC%B5%9C%EC%A2%85-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%ED%9A%8C%EA%B3%A0)
+
+<br>
+
+## 10. 기타
+> [팀 Github repository](https://github.com/BreedingMe/CoCoBackend)
