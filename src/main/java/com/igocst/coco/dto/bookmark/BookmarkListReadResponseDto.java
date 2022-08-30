@@ -3,10 +3,8 @@ package com.igocst.coco.dto.bookmark;
 import com.igocst.coco.domain.MeetingType;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 @Builder
 public class BookmarkListReadResponseDto {
     private String status;

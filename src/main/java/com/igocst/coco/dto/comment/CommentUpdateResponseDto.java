@@ -3,7 +3,6 @@ package com.igocst.coco.dto.comment;
 import lombok.*;
 
 @Builder
-@Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor

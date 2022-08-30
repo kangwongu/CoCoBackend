@@ -4,11 +4,10 @@ import com.igocst.coco.domain.MeetingType;
 import com.igocst.coco.domain.MemberRole;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 import java.time.LocalDateTime;
 
 
-@Getter @Setter
+@Getter
 @Builder
 public class PostReadResponseDto {
     private String status;

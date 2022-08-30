@@ -46,11 +46,10 @@ public class MemberService {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Value("${secret.admin.token}")
-    private String ADMIN_TOKEN;   // 임시 관리자 토큰
+    private String ADMIN_TOKEN;
 
     // 로그인
     public ResponseEntity<LoginResponseDto> login(LoginRequestDto requestDto) {
-        // requestDto에 담긴 로그인 정보들이 DB에 있는지 확인
         Optional<Member> memberOptional = memberRepository.findByEmail(requestDto.getEmail());
         if (memberOptional.isEmpty()) {
             log.error("error={}", "로그인 실패");
@@ -88,7 +87,6 @@ public class MemberService {
 
     // 회원가입
     public ResponseEntity<RegisterResponseDto> register(RegisterRequestDto requestDto) {
-        // 회원 DB에 중복된 이메일이 있으면 에러
         if (memberRepository.findByEmail(requestDto.getEmail()).isPresent()) {
             log.error("error={}", "회원가입 시, 이메일 중복 오류");
             return new ResponseEntity<>(
@@ -97,7 +95,6 @@ public class MemberService {
             );
         }
 
-        // 회원 DB에 중복된 닉네임이 있으면 에러
         if (memberRepository.findByNickname(requestDto.getNickname()).isPresent()) {
             log.error("error={}", "회원가입 시, 닉네임 중복 오류");
             return new ResponseEntity<>(
@@ -106,7 +103,6 @@ public class MemberService {
             );
         }
 
-        // 1. 권한 확인
         MemberRole role = MemberRole.MEMBER;
         if (requestDto.isAdmin()) {
             if (!requestDto.getAdminToken().equals(ADMIN_TOKEN)) {
@@ -119,7 +115,6 @@ public class MemberService {
             role = MemberRole.ADMIN;
         }
 
-        // 2. requestDto에 담긴 회원 가입 정보들, 확인한 권한정보를 바탕으로 Member를 만든다
         Member member = Member.builder()
                 .email(requestDto.getEmail())
                 .password(passwordEncoder.encode(requestDto.getPassword()))
@@ -128,10 +123,9 @@ public class MemberService {
                 .githubUrl(requestDto.getGithubUrl())
                 .portfolioUrl(requestDto.getPortfolioUrl())
                 .introduction((requestDto.getIntroduction()))
-                .role(role) // 권한 추가 (ADMIN / MEMBER)
+                .role(role)
                 .build();
 
-        // 3. 생성한 member를 회원 DB에 저장
         memberRepository.save(member);
 
         return new ResponseEntity<>(
@@ -228,7 +222,6 @@ public class MemberService {
 
     // 이메일 중복 체크
     public ResponseEntity<CheckDupResponseDto> checkEmailDup(CheckEmailDupRequestDto checkEmailDupRequestDto) {
-        // 이메일이 중복이면 true, 아니면 false
         String email = checkEmailDupRequestDto.getEmail();
         boolean isDup = memberRepository.findByEmail(email).isPresent();
 
@@ -240,7 +233,6 @@ public class MemberService {
 
     // 닉네임 중복 체크
     public ResponseEntity<CheckDupResponseDto> checkNicknameDup(CheckNicknameDupRequestDto checkNicknameDupRequestDto) {
-        // 닉네임이 중복이면 true, 아니면 false
         String nickname = checkNicknameDupRequestDto.getNickname();
         boolean isDup = memberRepository.findByNickname(nickname).isPresent();
 
@@ -284,8 +276,6 @@ public class MemberService {
     // 자신이 작성한 게시글 프로필에서 보여주기
     @Transactional
     public ResponseEntity<List<PostReadResponseDto>> readMyPosts(MemberDetails memberDetails) {
-
-        // 1. 로그인한 사용자의 게시글 전부 가져와서 반환
         List<Post> posts = postRepository.findAllByMember_IdOrderByCreateDateDesc(memberDetails.getMember().getId());
         List<PostReadResponseDto> postList = new ArrayList<>();
         for (Post post : posts) {
@@ -309,7 +299,6 @@ public class MemberService {
     }
 
     public ResponseEntity<List<CommentReadResponseDto>> readMyComments(MemberDetails memberDetails) {
-        // 1. 로그인한 사용자의 모든 댓글을 가져와서 반환
         List<Comment> comments = commentRepository.findAllByMember_IdOrderByLastModifiedDateDesc(memberDetails.getMember().getId());
         List<CommentReadResponseDto> commentList = new ArrayList<>();
         for (Comment comment : comments) {

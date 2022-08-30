@@ -40,7 +40,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(List.of("https://www.cocoding.xyz/"));
+        configuration.setAllowedOriginPatterns(List.of("https://www.cocoding.xyz"));
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);
@@ -56,7 +56,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().disable();
         http.cors();
 
-        // TODO: permitAll을 하면 /user를 사용하는 모든 사람들에게 모든걸 허용해준 것! 다시 한번 살펴보기
         // JWT 사용 위해 세션 안씀
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
@@ -68,10 +67,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/register/**").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/post/list/**").permitAll()
-//                .antMatchers("/post/recruit/list").permitAll()
                 .antMatchers("/post/search").permitAll()
-//                .antMatchers("/post/hits/list").permitAll()
-//                .antMatchers("/post/comments/list").permitAll()
                 // 이외의 URI는 인증을 거친다.
                 .anyRequest()
                 .authenticated()

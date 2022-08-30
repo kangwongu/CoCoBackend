@@ -25,7 +25,6 @@ public class MemberController {
     // 로그인
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto requestDto) {
-        // 로그인에 성공하면 클라이언트로, 생성한 JWT 토큰을 보낸다.
         return memberService.login(requestDto);
     }
 

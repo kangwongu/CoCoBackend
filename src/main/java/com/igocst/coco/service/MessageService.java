@@ -41,7 +41,7 @@ public class MessageService {
                     MessageCreateResponseDto.builder().status(StatusMessage.UNKNOWN_RECEIVER).build(),
                     HttpStatus.valueOf(StatusCode.BAD_REQUEST)
             );
-        };
+        }
 
         Member receivedMember = receivedMemberOptional.get();
 
@@ -58,7 +58,6 @@ public class MessageService {
                 .receiver(receivedMember)
                 .title(XssPreventer.escape(messageCreateRequestDto.getTitle()))
                 .content(XssPreventer.escape(messageCreateRequestDto.getContent()))
-                .createDate(messageCreateRequestDto.getCreateDate())
                 .build();
 
         sendMember.sendMessage(message);
@@ -141,8 +140,8 @@ public class MessageService {
                 .title(m.getTitle())
                 .content(m.getContent())
                 .receiver(m.getReceiver().getNickname())
-                .readState(m.isReadState())
                 .createDate(m.getCreateDate())
+                .readState(m.isReadState())
                 .status(StatusMessage.SUCCESS)
                 .build());
     }

@@ -38,13 +38,11 @@ public class MemberDetails implements UserDetails {
         return member.getPassword();
     }
 
-    // 스프링 시큐리티 username = coco 프로젝트 email
     @Override
     public String getUsername() {
         return member.getEmail();
     }
 
-    // 로그인 된 사용자를 페이지에서 표시할 땐, 이메일이 아닌 닉네임을 보여줄 것
     public String getNickname() {
         return member.getNickname();
     }

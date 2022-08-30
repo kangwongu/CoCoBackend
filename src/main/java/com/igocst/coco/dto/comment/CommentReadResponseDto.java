@@ -5,7 +5,6 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Builder
-@Setter
 @Getter
 //@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CommentReadResponseDto {

@@ -2,7 +2,6 @@ package com.igocst.coco.controller;
 
 import com.igocst.coco.domain.MemberRole;
 import com.igocst.coco.dto.comment.*;
-import com.igocst.coco.dto.post.PostReadResponseDto;
 import com.igocst.coco.security.MemberDetails;
 import com.igocst.coco.service.CommentService;
 import lombok.RequiredArgsConstructor;

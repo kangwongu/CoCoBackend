@@ -3,10 +3,7 @@ package com.igocst.coco.domain;
 import com.igocst.coco.domain.timestamped.Timestamped;
 import com.igocst.coco.dto.post.PostUpdateRequestDto;
 import com.nhncorp.lucy.security.xss.XssPreventer;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,9 +11,7 @@ import java.util.List;
 
 @Entity
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends Timestamped {
 
     @Id
@@ -24,9 +19,8 @@ public class Post extends Timestamped {
     @Column(name = "POST_ID")
     private Long id;
 
-    // JSON으로 타입으로 변환하기 위해 fetch타입 LAZY를 해제
-    @ManyToOne()
-    @JoinColumn(name = "MEMBER_ID") // 외래키와 매핑
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
     @Column(nullable = false)
@@ -51,13 +45,28 @@ public class Post extends Timestamped {
     @Enumerated(EnumType.STRING)
     private MeetingType meetingType;
 
-    // 댓글 양방향, 게시글이 삭제되면, 댓글도 같이 삭제
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
 
-    // 북마크
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<Bookmark> bookmarks = new ArrayList<>();
+
+    @Builder
+    public Post(Long id, Member member, String title, String content, String period, String contact,
+                boolean recruitmentState, int hits, MeetingType meetingType, List<Comment> comments,
+                List<Bookmark> bookmarks) {
+        this.id = id;
+        this.member = member;
+        this.title = title;
+        this.content = content;
+        this.period = period;
+        this.contact = contact;
+        this.recruitmentState = recruitmentState;
+        this.hits = hits;
+        this.meetingType = meetingType;
+        this.comments = comments;
+        this.bookmarks = bookmarks;
+    }
 
     /*
      * 비즈니스 로직

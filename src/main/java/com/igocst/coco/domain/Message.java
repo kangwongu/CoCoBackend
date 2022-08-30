@@ -1,19 +1,15 @@
 package com.igocst.coco.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.igocst.coco.domain.timestamped.Timestamped;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class Message {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Message extends Timestamped{
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MESSAGE_ID")
@@ -36,8 +32,15 @@ public class Message {
     @Column(nullable = false)
     private boolean readState;
 
-    @Column(nullable = false)
-    private LocalDateTime createDate;
+    @Builder
+    public Message(Long id, Member sender, Member receiver, String title, String content, boolean readState) {
+        this.id = id;
+        this.sender = sender;
+        this.receiver = receiver;
+        this.title = title;
+        this.content = content;
+        this.readState = readState;
+    }
 
     public void sendMember(Member member) { this.sender = member;}
     public void changeReadState() { this.readState = true; }
