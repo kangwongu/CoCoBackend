@@ -5,7 +5,7 @@
 
 ## 1. 프로젝트 개요
 - 제작기간: 2022.06.24 ~ 2022.07.29
-- 참여인원: 4명
+- 참여인원: 4명 - [팀 Github repository](https://github.com/BreedingMe/CoCoBackend)
 - 주제: 사이드 프로젝트 구인 플랫폼
 - 기획의도: 원하는 사이드 프로젝트를 기획하고 함께할 인원을 모집할 수 있는 플랫폼
 
@@ -44,7 +44,8 @@
 <br>
 
 ## 3. ERD 설계
-![수정  CoCo (1)](https://user-images.githubusercontent.com/59812251/183559776-06765c85-f5fe-43e9-bc06-587140dc316a.png)
+<img width="1360" alt="KakaoTalk_20220829_154531949" src="https://user-images.githubusercontent.com/59812251/187577610-80d9b3da-0c99-4244-904d-7a992d345513.png">
+
 
 <br>
 
@@ -55,14 +56,15 @@
 
 ## 5. 기여한 기능
 #### 담당한 기능: 회원 관련 기능 / 게시글 관련 기능
-- 회원가입 기능
-- 회원가입 시, 이메일/닉네임 중복확인 기능
-- 로그인, 로그아웃 기능
-- 관리자 기능 (게시글 / 댓글 강제 삭제 기능)
-- 게시글 CURD
-- 게시글 필터 기능 (모집중/모집완료, 최신순, 조회순, 댓글순)
-- 게시글 검색 기능
-- 프로필 페이지에서 본인이 작성한 게시글 / 댓글 조회 기능
+- Spring Data JPA를 활용한 기능 구현
+    - 회원가입
+    - 이메일/닉네임 중복확인 기능
+    - 게시글 필터 기능(모집중/모집완료, 최신순, 조회순, 댓글순)
+    - 게시글 검색 기능
+    - 프로필 페이지 R (본인 작성 게시글 / 댓글)
+- Spring Security, JWT를 활용한 로그인, 로그아웃 기능
+- Spring Security를 활용한 관리자 D (모든 회원의 게시글 / 댓글 강제 삭제 기능)
+- JPA 양방향관계 매핑을 활용한 게시글 CRUD
 
 <br>
 
@@ -410,6 +412,126 @@ private void updateHits(Long postId, HttpServletRequest request, HttpServletResp
 
 <br>
 
+### 엔티티 삭제 시, 외래키 참조 무결성 문제 해결
+
+:bookmark: [블로그에 정리했던 내용](https://velog.io/@kwg527/Spring-JPA-%EC%97%94%ED%8B%B0%ED%8B%B0-%EC%82%AD%EC%A0%9C-%EC%8B%9C-%EC%99%B8%EB%9E%98%ED%82%A4-%EC%B0%B8%EC%A1%B0-%EB%AC%B4%EA%B2%B0%EC%84%B1-%EB%AC%B8%EC%A0%9C)
+
+- 문제
+  - 회원 엔티티 삭제 시, 회원 PK를 FK로 사용하는 게시글, 댓글, 쪽지 엔티티에서 외래키 참조 무결성 문제 발생
+  
+- 문제 해결
+  - 회원 엔티티에서 1대N 관계로 매핑되어 있는 필드에 cascade = CascadeType.REMOVE 를 붙여서 해결
+
+<br>
+
+<details>
+<summary><b>:bulb: 기존 방식</b></summary>
+<div markdown="1">
+
+<br>
+
+| Member.java
+``` java
+...
+// 게시글 양방향
+@OneToMany(mappedBy = "member")
+@Builder.Default
+private List<Post> posts = new ArrayList<>();
+
+// 댓글 양방향
+@OneToMany(mappedBy = "member")
+@Builder.Default
+private List<Comment> comments = new ArrayList<>();
+
+// 쪽지 양방향
+@OneToMany(mappedBy = "sender")
+@Builder.Default
+private List<Message> sendMessage = new ArrayList<>();
+...
+```
+- cascade를 달아주지 않아, 하위 엔티티에 전파가 안 됨
+    - 회원 엔티티 삭제 시, 회원 엔티티의 PK값을 FK로 사용하고 있는 게시글, 댓글, 메시지 엔티티에서 문제 발생
+
+</div>
+</details>
+
+<br>
+
+<details>
+<summary><b>:bulb: 개선한 방식</b></summary>
+<div markdown="1">
+
+<br>
+
+| Member.java
+``` java
+// 게시글 양방향, 회원이 삭제되면, 게시글도 같이 삭제
+@OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+@Builder.Default
+private List<Post> posts = new ArrayList<>();
+
+// 댓글 양방향, 회원이 삭제되면, 댓글도 같이 삭제
+@OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+@Builder.Default
+private List<Comment> comments = new ArrayList<>();
+
+// 쪽지 양방향, 회원이 삭제되면, 쪽지(발송한 쪽지)도 같이 삭제
+@OneToMany(mappedBy = "sender", cascade = CascadeType.REMOVE)
+@Builder.Default
+private List<Message> sendMessage = new ArrayList<>();
+```
+- cascade = CascadeType.REMOVE를 붙여서 회원 삭제 시, 하위 엔티티도 같이 삭제되도록 함
+
+📌 [변경 코드 확인](https://github.com/BreedingMe/CoCoBackend/commit/206d14610091e9ce167ac6894ec89d2dd83cfe87#diff-35a953aeb8df44c6f295f84560ebcb962a41f8bea1769d74816031c248bb80cdL42-R53)
+
+</div>
+</details>
+
+<br>
+
+### 양방향 매핑 시 발생한 순환참조 문제 (무한루프) 해결
+
+:bookmark: [블로그에 정리했던 내용](https://velog.io/@kwg527/Spring-JPA-JSON%EC%9C%BC%EB%A1%9C-%EB%B3%80%ED%99%98%ED%95%B4%EC%84%9C-%EB%B0%98%ED%99%98%ED%95%98%EA%B8%B0)
+
+- 문제
+  - `java.lang.IllegalStateException: Cannot call sendError() after the response has been committed` 문제 발생
+  - JSON을 반환하는 API에서 엔티티를 JSON으로 변환하는 과정에서 양방향 매핑된 필드를 반복적으로 출력하는 무한루프(순환참조문제)가 발생
+  
+- 문제 해결
+  - 엔티티를 반환하지 않고, Dto를 만들어 반환하는 방식으로 해결
+
+<br>
+
+<details>
+<summary><b>:bulb: 개선한 방식</b></summary>
+<div markdown="1">
+
+<br>
+
+컨트롤러에서 엔티티를 반환하는 것이 아니라, Dto를 반환함으로써 문제 해결
+
+| PostController.java
+``` java
+public class PostController {
+
+    ...
+
+    @GetMapping("/post/list")
+    public ResponseEntity<List<PostReadResponseDto>> readPostList() {
+        return postService.readPostList();
+    }
+    ...
+}
+```
+- 엔티티를 반환하지 않고, Dto를 반환함으로써 무한루프를 
+
+📌 [Dto 패키지](https://github.com/BreedingMe/CoCoBackend/tree/refactoring/src/main/java/com/igocst/coco/dto)
+
+</div>
+</details>
+
+<br>
+
 ## 8. 기타 개선한 부분
 
 📌 [Optional 사용](https://github.com/BreedingMe/CoCoBackend/wiki/Optional-%EC%82%AC%EC%9A%A9)  
@@ -418,10 +540,31 @@ private void updateHits(Long postId, HttpServletRequest request, HttpServletResp
 
 <br>
 
-## 9. 회고 / 느낀 점
-> [최종 프로젝트 회고](https://velog.io/@kwg527/%ED%9A%8C%EA%B3%A0-%EB%82%B4%EB%B0%B0%EC%BA%A0-%EC%B5%9C%EC%A2%85-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%ED%9A%8C%EA%B3%A0)
+## 9. 고객 피드백 반영
+
+![20220831_194800](https://user-images.githubusercontent.com/59812251/187661884-27781cf3-ac20-41e3-9da0-f7414c169928.png)
+
+
+- 피드백 기간 : 2022.07.21 ~ 2022.07.23
+- 참여 인원 : 54명
+- 5주간의 프로젝트 기간 중, 4주차 주말에 배포 후 고객 피드백을 받고 이후 1주동안 피드백을 반영했습니다.
+
+<details>
+<summary><b>피드백 내용</b></summary>
+<div markdown="1">
 
 <br>
 
-## 10. 기타
-> [팀 Github repository](https://github.com/BreedingMe/CoCoBackend)
+1. XSS 보안
+2. 게시글 상세페이지에서 새로고침 시, 조회수 증가 문제 해결 요청
+3. 게시글 검색 기능 추가 요청
+4. 게시글 필터 추가 요청
+
+</div>
+</details>
+
+
+<br>
+
+## 10. 회고 / 느낀 점
+> [최종 프로젝트 회고](https://velog.io/@kwg527/%ED%9A%8C%EA%B3%A0-%EB%82%B4%EB%B0%B0%EC%BA%A0-%EC%B5%9C%EC%A2%85-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%ED%9A%8C%EA%B3%A0)
