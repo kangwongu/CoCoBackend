@@ -1,10 +1,9 @@
 package com.igocst.coco.dto.comment;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
+//@NoArgsConstructor
 public class CommentUpdateRequestDto {
     private String content;
 }

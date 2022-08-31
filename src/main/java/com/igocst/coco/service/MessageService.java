@@ -48,7 +48,7 @@ public class MessageService {
         if(receivedMember == sendMember) {
             log.error("nickname={}, error={}", messageCreateRequestDto.getReceiver(), "쪽지 수신자가 발신자와 같음");
             return new ResponseEntity<>(
-                    MessageCreateResponseDto.builder().status(StatusMessage.INVALID_PARAM).build(),
+                    MessageCreateResponseDto.builder().status(StatusMessage.NOT_ALLOWED_RECEIVER).build(),
                     HttpStatus.valueOf(StatusCode.BAD_REQUEST)
             );
         }

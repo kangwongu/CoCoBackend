@@ -4,7 +4,11 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Builder
 public class BookmarkSaveResponseDto {
     private String status;
+
+    @Builder
+    public BookmarkSaveResponseDto(String status) {
+        this.status = status;
+    }
 }

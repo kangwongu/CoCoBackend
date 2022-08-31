@@ -1,10 +1,9 @@
 package com.igocst.coco.dto.bookmark;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
+//@NoArgsConstructor
 public class BookmarkSaveRequestDto {
     private String status;
 }

@@ -16,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -81,13 +80,11 @@ public class PostService {
         boolean enableUpdate = false;
         boolean enableDelete = false;
 
-        // 2. 현재 로그인한 회원이 해당 게시글을 작성한 회원이 맞다면 수정, 삭제 가능
         if (memberDetails.getMember().getId() == findPost.getMember().getId()) {
             enableUpdate = true;
             enableDelete = true;
         }
 
-        // 3. 현재 로그인한 회원이 관리자면, 모든 게시글 삭제 가능
         MemberRole memberRole = MemberRole.MEMBER;
         if (memberDetails.getMember().getRole().equals(MemberRole.ADMIN)) {
             memberRole = MemberRole.ADMIN;
@@ -156,8 +153,8 @@ public class PostService {
 
     // 조회수 증가 로직
     @Transactional
-    public int increaseHits(Long id) {
-        return postRepository.updateHits(id);
+    public void increaseHits(Long id) {
+        postRepository.updateHits(id);
     }
 
     public ResponseEntity<List<PostReadResponseDto>> readPostList() {
@@ -186,10 +183,10 @@ public class PostService {
 
     // 게시글 목록 조회 (모집 중인거만)
     public ResponseEntity<List<PostReadResponseDto>> readRecruitingPostList() {
-        List<Post> recrutingPosts = postRepository.findAllByRecruitmentStateFalseOrderByCreateDateDesc();
+        List<Post> recruitingPosts = postRepository.findAllByRecruitmentStateFalseOrderByCreateDateDesc();
         List<PostReadResponseDto> recrutingPostList = new ArrayList<>();
 
-        for (Post post : recrutingPosts) {
+        for (Post post : recruitingPosts) {
             recrutingPostList.add(PostReadResponseDto.builder()
                     .status(StatusMessage.SUCCESS)
                     .id(post.getId())
@@ -210,9 +207,9 @@ public class PostService {
 
     // 조회수순 게시글 목록 조회 (모집 중인거만)
     public ResponseEntity<List<PostReadResponseDto>> readRecruitingHitsPostList() {
-        List<Post> recrutingHitsPosts = postRepository.findAllByRecruitmentStateFalseOrderByHitsDesc();
+        List<Post> recruitingHitsPosts = postRepository.findAllByRecruitmentStateFalseOrderByHitsDesc();
         List<PostReadResponseDto> recrutingHitsPostList = new ArrayList<>();
-        for (Post post : recrutingHitsPosts) {
+        for (Post post : recruitingHitsPosts) {
             recrutingHitsPostList.add(PostReadResponseDto.builder()
                     .status(StatusMessage.SUCCESS)
                     .id(post.getId())
@@ -256,11 +253,11 @@ public class PostService {
 
     // 댓글 많은 순으로 게시글 목록 조회 (모집 중인거만)
     public ResponseEntity<List<PostReadResponseDto>> readRecruitingCommentsPostList() {
-        List<Post> recrutingPosts = postRepository.findAllByRecruitmentStateFalse();
-        getCommentsPosts(recrutingPosts);
+        List<Post> recruitingPosts = postRepository.findAllByRecruitmentStateFalse();
+        getCommentsPosts(recruitingPosts);
 
         List<PostReadResponseDto> recruitCommentsPostList = new ArrayList<>();
-        for (Post post : recrutingPosts) {
+        for (Post post : recruitingPosts) {
             recruitCommentsPostList.add(PostReadResponseDto.builder()
                     .status(StatusMessage.SUCCESS)
                     .id(post.getId())
@@ -305,7 +302,7 @@ public class PostService {
     }
 
     // 댓글수 내림차순으로 게시글 정렬
-    private List<Post> getCommentsPosts(List<Post> posts) {
+    private void getCommentsPosts(List<Post> posts) {
         for (int i = 0; i< posts.size()-1; i++) {
             boolean swap = false;
 
@@ -315,14 +312,13 @@ public class PostService {
                     swap = true;
                 }
             }
-            if (swap == false) {
+            if (!swap) {
                 break;
             }
         }
-        return posts;
     }
 
-    //  게시글 수정
+    // 게시글 수정
     @Transactional
     public ResponseEntity<PostUpdateResponseDto> updatePost(Long postId, PostUpdateRequestDto requestDto, MemberDetails memberDetails) {
         Optional<Member> memberOptional = memberRepository.findById(memberDetails.getMember().getId());
@@ -399,6 +395,7 @@ public class PostService {
         Member member = findPost.getMember();
 
         boolean isValid = member.deletePost(postId);
+
         if(!isValid) {
             log.error("nickname={}, error={}", memberDetails.getNickname(), "삭제할 게시글이 존재하지 않음");
             return new ResponseEntity<>(

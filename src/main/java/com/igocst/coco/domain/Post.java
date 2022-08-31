@@ -4,7 +4,6 @@ import com.igocst.coco.domain.timestamped.Timestamped;
 import com.igocst.coco.dto.post.PostUpdateRequestDto;
 import com.nhncorp.lucy.security.xss.XssPreventer;
 import lombok.*;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;

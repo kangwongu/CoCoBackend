@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -44,7 +43,7 @@ public class CommentController {
     @DeleteMapping("/comment/{commentId}")
     public ResponseEntity<CommentDeleteResponseDto> deleteComment(@PathVariable Long commentId,
                                                   @AuthenticationPrincipal MemberDetails memberDetails){
-        return commentService.deleteComment(commentId, memberDetails); //.removeCommentById? vs removeComment
+        return commentService.deleteComment(commentId, memberDetails);
     }
 
     // 관리자, 댓글 삭제

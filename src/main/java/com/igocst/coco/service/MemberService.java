@@ -19,7 +19,6 @@ import com.igocst.coco.util.FileUtils;
 import com.nhncorp.lucy.security.xss.XssPreventer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.http.fileupload.MultipartStream;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -69,7 +68,6 @@ public class MemberService {
             );
         }
 
-        // JWT 토큰 만들어서 반환하기
         String token = jwtTokenProvider.generateToken(requestDto.getEmail());
         if (token == null) {
             log.error("nickname={}, error={}", findMember.getNickname(), "토큰 발급 오류");
@@ -157,18 +155,15 @@ public class MemberService {
     public ResponseEntity<MemberUpdateResponseDto> updateMember(MemberUpdateRequestDto memberUpdateRequestDto,
                                                 MemberDetails memberDetails) throws IOException {
 
-        //멤버를 찾고
         Optional<Member> memberOptional = memberRepository.findById(memberDetails.getMember().getId());
         Member member = memberOptional.get();
 
-        //파일을 getfile로 해서 받음
         MultipartFile file = memberUpdateRequestDto.getFile();
         if (file != null) {
             InputStream inputStream = file.getInputStream();
 
             boolean isValid = FileUtils.validImgFile(inputStream);
             if(!isValid) {
-                // exception 처리
                 return new ResponseEntity<>(
                         MemberUpdateResponseDto.builder().status(StatusMessage.BAD_REQUEST).build(),
                         HttpStatus.valueOf(StatusCode.BAD_REQUEST));
@@ -177,15 +172,8 @@ public class MemberService {
                 String fileUrl = s3Service.upload(file, "profileImage", memberDetails);
                 member.updateProfileImage(fileUrl);
             }
-
         }
 
-        // TODO: Step 1. 똑같은 정보를 준건지, 하나라도 수정이 된건지 체크! -> 조건문으로 분기처리를해서 돌아가는지 테스트해봐야할듯.(DB에 최소한으로 다녀오기!)
-        // TODO: Step 2. S3에 저장하기(S3에 저장해야 해당 파일에 대한 url에 반환되기 때문에!)
-        // TODO: Step 3. DB에 저장하기(반환된 S3에 저장되어있는 url을 DB에 저장)
-        // TODO: Step 4. 왜 IOException 같은 예외처리를 해줘야했는지 설명할 수 있을 정도로 파악해보기.
-
-        // TODO: password 수정하려면 기존 비번 확인하는거 필요, imageUrl도 추가해야함.
         //그 멤버의 정보를 바꾼다.
         member.updateNickname(XssPreventer.escape(memberUpdateRequestDto.getNickname()));
         member.updateGithubUrl(XssPreventer.escape(memberUpdateRequestDto.getGithubUrl()));
@@ -246,7 +234,6 @@ public class MemberService {
     public ResponseEntity<CheckDupResponseDto>  checkNicknameDupProfile(CheckNicknameDupRequestDto checkNicknameDupRequestDto,
                                                                         MemberDetails memberDetails) {
 
-        // 찾은 멤버의 아이디로 멤버를 찾았으면, 멤버의 기존 닉네임을 얻어올 수 있다.
         Optional<Member> memberOptional = memberRepository.findById(memberDetails.getMember().getId());
         Member member = memberOptional.get();
 
@@ -254,10 +241,6 @@ public class MemberService {
         String nickname = checkNicknameDupRequestDto.getNickname();
         //중복이면 true, 아니면 false
         boolean isDup = false;
-
-        //받은 닉네임과 기존 닉네임이 다르면 = 닉네임을 바꾼것.
-        //닉네임을 안바꾸면 if문을 안돌게 된다.
-        //.equals는 주소값이 아니라 그 안에 들은 값을 직접 비교한다.
 
         if (memberRepository.findByNickname(nickname).isPresent()) {
             isDup = true;

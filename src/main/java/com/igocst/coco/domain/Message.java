@@ -2,9 +2,7 @@ package com.igocst.coco.domain;
 
 import com.igocst.coco.domain.timestamped.Timestamped;
 import lombok.*;
-
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter

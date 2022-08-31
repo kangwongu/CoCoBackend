@@ -4,14 +4,11 @@ import com.igocst.coco.domain.MemberRole;
 import lombok.*;
 import java.time.LocalDateTime;
 
-@Builder
 @Getter
-//@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CommentReadResponseDto {
     private Long id;
     private Long postId;
     private String comments;
-    //List가 아니라 String으로 해줘야함 왜냐하면, Comment entity에  getContent할 content가 String 타입이니까.
     private String nickname;
     private String status;
     private LocalDateTime createDate;
@@ -26,4 +23,25 @@ public class CommentReadResponseDto {
     private String githubUrl;
     private String portfolioUrl;
     private String introduction;
+
+    @Builder
+    public CommentReadResponseDto(Long id, Long postId, String comments, String nickname, String status,
+                                  LocalDateTime createDate, LocalDateTime modifyDate, boolean enableDelete,
+                                  boolean enableUpdate, MemberRole memberRole, String profileImageUrl, String githubUrl,
+                                  String portfolioUrl, String introduction) {
+        this.id = id;
+        this.postId = postId;
+        this.comments = comments;
+        this.nickname = nickname;
+        this.status = status;
+        this.createDate = createDate;
+        this.modifyDate = modifyDate;
+        this.enableDelete = enableDelete;
+        this.enableUpdate = enableUpdate;
+        this.memberRole = memberRole;
+        this.profileImageUrl = profileImageUrl;
+        this.githubUrl = githubUrl;
+        this.portfolioUrl = portfolioUrl;
+        this.introduction = introduction;
+    }
 }
