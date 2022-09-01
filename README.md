@@ -12,40 +12,16 @@
 <br>
 
 ## 2. 사용기술
-**Backend**
-- Java 11
-- Spring Boot 2.7.1
-- Gradle 7.4.1
-- Spring Data JPA
-- Spring Security
-- Java JWT
-
-**Database**
--  AWS RDS (MySQL 8.0.28)
-
-**Infra**
-- AWS ELB
-- AWS EC2
-- AWS S3
-- AWS CloudFront
-
-**CI/CD**
-- Github Action
-
-**Frontend**
-- HTML5
-- CSS3
-- JavaScript
-- Bulma
-- JQuery
-- Webpack
-- Node.js
+- Backend: `Java 11` `Spring Boot 2.7.1` `Spring Data JPA` `Gradle 7.4.1` `Spring Security`
+- Database: `AWS RDS (MySQL 8.0.28)`
+- Cloud: `AWS ELB` `AWS EC2` `AWS S3` `AWS CloudFront`
+- CI/CD: `Github Actions`
+- Frontend: `HTML5` `CSS3` `JavaScript` `Bulma` `JQuery` `Webpack` `Node.js`
 
 <br>
 
 ## 3. ERD 설계
 <img width="1360" alt="KakaoTalk_20220829_154531949" src="https://user-images.githubusercontent.com/59812251/187577610-80d9b3da-0c99-4244-904d-7a992d345513.png">
-
 
 <br>
 
