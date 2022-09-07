@@ -272,6 +272,7 @@ private void updateHits(Long postId, HttpServletRequest request, HttpServletResp
   - 만약 oldCookie에 값이 없다는 것은 어느 게시글에도 접근한 적이 없으므로, 접근한 게시글의 조회수를 1 증가시키고 게시글 id를 oldCookie에 추가합니다.
     - 이 시점부터 이 게시글에 여러 번 접근해도, 조회수가 증가하지 않습니다. (최초 접근시만 조회 수가 증가됩니다)
 
+> 쿠키가 '아이디 저장', '오늘 이 팝업을 보지않습니다'등에 활용된다는 것은 알고 있었는데, 이러한 부분에서도 활용된다는 것을 알게되었고, 쿠키의 활용 예시를 경험할 수 있었습니다.
 📌 [변경 코드 확인](https://github.com/BreedingMe/CoCoBackend/pull/176/files)
 
 </div>
@@ -381,6 +382,9 @@ private void updateHits(Long postId, HttpServletRequest request, HttpServletResp
 }
 ```
 
+> 로컬 환경과 배포 환경이 다르다는 걸 알게 되었습니다. <br>
+특히, 로컬 환경에서 테스트가 끝났다고 배포 환경에서 테스트를 안해도 되는 것이 아니라는 걸 알게 되었습니다.
+
 📌 [변경 코드 확인](https://github.com/BreedingMe/CoCoBackend/pull/181/files#diff-48a80a6196151da0e8bc16802ba19988153fa471ed6f20d3fa61f0f094d867c4)
 
 </div>
@@ -458,6 +462,9 @@ private List<Message> sendMessage = new ArrayList<>();
 ```
 - cascade = CascadeType.REMOVE를 붙여서 회원 삭제 시, 하위 엔티티도 같이 삭제되도록 함
 
+> cascade옵션에 대해 좀 더 친숙해질 수 있는 경험이 되었습니다. <br>
+cascade가 어떤 옵션인지, 어떨 때 사용해야 하는지를 알게 되었습니다.
+
 📌 [변경 코드 확인](https://github.com/BreedingMe/CoCoBackend/commit/206d14610091e9ce167ac6894ec89d2dd83cfe87#diff-35a953aeb8df44c6f295f84560ebcb962a41f8bea1769d74816031c248bb80cdL42-R53)
 
 </div>
@@ -499,7 +506,9 @@ public class PostController {
     ...
 }
 ```
-- 엔티티를 반환하지 않고, Dto를 반환함으로써 무한루프를 
+- 엔티티를 반환하지 않고, Dto를 반환함으로써 무한루프를 해결
+
+> Dto의 사용이유를 알게 되었고, 적극적으로 사용해보며 Dto 사용에 익숙해지는 경험을 했습니다.
 
 📌 [Dto 패키지](https://github.com/BreedingMe/CoCoBackend/tree/refactoring/src/main/java/com/igocst/coco/dto)
 
