@@ -70,8 +70,7 @@ public class S3Service {
         return amazonS3Client.getUrl(bucket, fileName).toString();
     }
 
-    // 로컬에 저장된 이미지 지우기
-    // 임시로 생성된 new file을 삭제해준다!
+    // 로컬에 저장된 이미지 지우기 (임시로 생성된 new file을 삭제해준다!)
     private void removeNewFile(File targetFile) {
         if (targetFile.delete()) {
             log.info("파일이 삭제되었습니다");
@@ -82,7 +81,7 @@ public class S3Service {
     }
 
     // 로컬에 파일 업로드 하기
-    //multipartFile을 File타입으로 변환해줌 (변환된 파일을 가지고 put을 해주면 됨)
+    // multipartFile을 File타입으로 변환해줌 (변환된 파일을 가지고 putS3를 해주면 됨)
     private Optional<File> convert(MultipartFile file) throws IOException {
         File convertFile = new File(System.getProperty("user.dir") + "/" + file.getOriginalFilename());
         if (convertFile.createNewFile()) { // 바로 위에서 지정한 경로에 File이 생성됨 (경로가 잘못되었다면 생성 불가능)

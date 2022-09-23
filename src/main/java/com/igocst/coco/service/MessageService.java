@@ -41,9 +41,17 @@ public class MessageService {
                     MessageCreateResponseDto.builder().status(StatusMessage.UNKNOWN_RECEIVER).build(),
                     HttpStatus.valueOf(StatusCode.BAD_REQUEST)
             );
-        };
+        }
 
+        // 본인에게 쪽지를 보낼 수 없음
         Member receivedMember = receivedMemberOptional.get();
+        if(receivedMember == sendMember) {
+            log.error("nickname={}, error={}", messageCreateRequestDto.getReceiver(), "쪽지 수신자가 발신자와 같음");
+            return new ResponseEntity<>(
+                    MessageCreateResponseDto.builder().status(StatusMessage.NOT_ALLOWED_RECEIVER).build(),
+                    HttpStatus.valueOf(StatusCode.BAD_REQUEST)
+            );
+        }
 
         // 쪽지 내용 255자 제한
         if (messageCreateRequestDto.getContent().length() > 255) {
@@ -58,7 +66,6 @@ public class MessageService {
                 .receiver(receivedMember)
                 .title(XssPreventer.escape(messageCreateRequestDto.getTitle()))
                 .content(XssPreventer.escape(messageCreateRequestDto.getContent()))
-                .createDate(messageCreateRequestDto.getCreateDate())
                 .build();
 
         sendMember.sendMessage(message);
@@ -87,8 +94,10 @@ public class MessageService {
         }
 
         Message message = messageOptional.get();
+
+        // 보낸 쪽지함에서 본인이 보낸 쪽지를 확인할 경우 읽음상태는 변경이 되지 않음
         // false -> true
-        message.changeReadState();
+        if (member != messageOptional.get().getSender()) { message.changeReadState();}
 
         return new ResponseEntity<>(
                 MessageReadResponseDto.builder()
@@ -139,7 +148,6 @@ public class MessageService {
             sendMessageList.add(MessageListReadResponseDto.builder()
                 .id(m.getId())
                 .title(m.getTitle())
-                .content(m.getContent())
                 .receiver(m.getReceiver().getNickname())
                 .readState(m.isReadState())
                 .createDate(m.getCreateDate())

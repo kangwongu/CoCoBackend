@@ -7,7 +7,6 @@ import com.igocst.coco.domain.Member;
 import com.igocst.coco.domain.MemberRole;
 import com.igocst.coco.domain.Post;
 import com.igocst.coco.dto.comment.*;
-import com.igocst.coco.dto.post.PostReadResponseDto;
 import com.igocst.coco.repository.CommentRepository;
 import com.igocst.coco.repository.MemberRepository;
 import com.igocst.coco.repository.PostRepository;
@@ -22,7 +21,6 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 @RequiredArgsConstructor
 @Service
 @Slf4j
@@ -32,14 +30,11 @@ public class CommentService {
     private final MemberRepository memberRepository;
 
     // 댓글 생성
-    // DB동기화를 위해 Transactional 어노테이션 사용
     @Transactional
     public ResponseEntity<CommentCreateResponseDto> createComment(CommentCreateRequestDto commentCreateRequestDto, Long postId, MemberDetails memberDetails) { //join = comment create
-        //회원을 찾아 가져오고.
         Optional<Member> memberOptional = memberRepository.findById(memberDetails.getMember().getId());
         Member member = memberOptional.get();
 
-        //주인인 Post를 찾고,
         Optional<Post> postOptional = postRepository.findById(postId);
         if (postOptional.isEmpty()) {
             log.error("nickname={}, error={}", member.getNickname(), "해당 게시글을 찾을 수 없음");
@@ -57,17 +52,14 @@ public class CommentService {
                     HttpStatus.valueOf(StatusCode.BAD_REQUEST)
             );
         }
-        //Comment를 하나 만들고
+
         Comment comment = Comment.builder()
                 .content(XssPreventer.escape(commentCreateRequestDto.getContent()))
                 .build();
-        /*주인에게 연관관계 메소드를 통해 "이 댓글 내거야!" 하고 말해줌
-        comment는 repo에서 꺼내온게 아니기 때문에 영속성이 없는상태
-        post가 영속성이기 때문에 comment도 연관관계 매핑을 통해 영속성으로 들어감*/
+
         member.createComment(comment);
         post.createComment(comment);
 
-        //댓글을 repo에 저장해줌. 이거 필요없.
         commentRepository.save(comment);
 
         return new ResponseEntity<>(
@@ -78,7 +70,6 @@ public class CommentService {
 
     // 댓글 조회
     public ResponseEntity<List<CommentReadResponseDto>> readCommentList(Long postId, MemberDetails memberDetails) {
-        //List로 받고
         List<Comment> comments = commentRepository.findAllByPostId(postId);
         List<CommentReadResponseDto> output = new ArrayList<>();
         boolean enableDelete;
@@ -88,13 +79,11 @@ public class CommentService {
             enableDelete = false;
             enableUpdate = false;
 
-            // 로그인한 회원은 본인이 작성한 댓글만 수정, 삭제할 수 있다.
             if (c.getMember().getId() == memberDetails.getMember().getId()) {
                 enableDelete = true;
                 enableUpdate = true;
             }
 
-            // 현재 로그인한 회원이 관리자라면 모든 댓글을 삭제할 수 있다.
             MemberRole memberRole = MemberRole.MEMBER;
             if (memberDetails.getMember().getRole().equals(MemberRole.ADMIN)) {
                 memberRole = MemberRole.ADMIN;

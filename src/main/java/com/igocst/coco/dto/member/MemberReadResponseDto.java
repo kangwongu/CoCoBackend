@@ -2,11 +2,8 @@ package com.igocst.coco.dto.member;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
-@Builder
 public class MemberReadResponseDto {
     private String email;
     private String nickname;
@@ -16,4 +13,16 @@ public class MemberReadResponseDto {
     private String status;
     // 프로필 페이지 이미지
     private String profileImageUrl;
+
+    @Builder
+    public MemberReadResponseDto(String email, String nickname, String githubUrl, String portfolioUrl,
+                                 String introduction, String status, String profileImageUrl) {
+        this.email = email;
+        this.nickname = nickname;
+        this.githubUrl = githubUrl;
+        this.portfolioUrl = portfolioUrl;
+        this.introduction = introduction;
+        this.status = status;
+        this.profileImageUrl = profileImageUrl;
+    }
 }

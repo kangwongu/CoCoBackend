@@ -2,9 +2,8 @@ package com.igocst.coco.dto.post;
 
 import com.igocst.coco.domain.MeetingType;
 import lombok.Getter;
-import lombok.Setter;
 
-@Getter @Setter
+@Getter
 public class PostSaveRequestDto {
     private String title;
     private String content;

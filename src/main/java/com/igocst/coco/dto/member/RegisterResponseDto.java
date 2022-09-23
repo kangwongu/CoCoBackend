@@ -4,7 +4,11 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Builder
 public class RegisterResponseDto {
     private String status;
+
+    @Builder
+    public RegisterResponseDto(String status) {
+        this.status = status;
+    }
 }

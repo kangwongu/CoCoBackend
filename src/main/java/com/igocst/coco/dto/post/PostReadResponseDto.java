@@ -4,12 +4,9 @@ import com.igocst.coco.domain.MeetingType;
 import com.igocst.coco.domain.MemberRole;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 import java.time.LocalDateTime;
 
-
-@Getter @Setter
-@Builder
+@Getter
 public class PostReadResponseDto {
     private String status;
     private Long id;
@@ -33,4 +30,31 @@ public class PostReadResponseDto {
     private String introduction;
     private String profileImageUrl;
     private String loginProfileImage;
+
+    @Builder
+    public PostReadResponseDto(String status, Long id, String title, String content, MeetingType meetingType,
+                               String contact, String period, boolean recruitmentState, int hits, LocalDateTime postDate,
+                               String writer, boolean enableUpdate, boolean enableDelete, MemberRole memberRole,
+                               String githubUrl, String portfolioUrl, String introduction, String profileImageUrl,
+                               String loginProfileImage) {
+        this.status = status;
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.meetingType = meetingType;
+        this.contact = contact;
+        this.period = period;
+        this.recruitmentState = recruitmentState;
+        this.hits = hits;
+        this.postDate = postDate;
+        this.writer = writer;
+        this.enableUpdate = enableUpdate;
+        this.enableDelete = enableDelete;
+        this.memberRole = memberRole;
+        this.githubUrl = githubUrl;
+        this.portfolioUrl = portfolioUrl;
+        this.introduction = introduction;
+        this.profileImageUrl = profileImageUrl;
+        this.loginProfileImage = loginProfileImage;
+    }
 }

@@ -6,7 +6,7 @@ public class StatusMessage {
     public static final String INVALID_TOKEN = "Invalid token";
     public static final String INVALID_PARAM = "Invalid param";
     public static final String UNKNOWN_RECEIVER = "Unknown receiver";
-    public static final String UNAUTHORIZED_USER = "Unauthorized user";
+    public static final String NOT_ALLOWED_RECEIVER = "Not allowed receiver";
     public static final String FORBIDDEN_USER = "Forbidden user";
     public static final String DUPLICATED_USER = "Duplicated user";
     public static final String DUPLICATED_BOOKMARK = "Duplicated bookmark";

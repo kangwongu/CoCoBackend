@@ -14,7 +14,6 @@ public class MemberDetailsService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
 
-    // 토큰에 담겨있던 email을 받아서 DB에 회원 정보가 있는지 확인
     @Override
     public MemberDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 

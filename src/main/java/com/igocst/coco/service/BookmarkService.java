@@ -92,7 +92,6 @@ public class BookmarkService {
         return new ResponseEntity<>(bookmarkList, HttpStatus.valueOf(StatusCode.SUCCESS));
     }
 
-
     // 북마크 삭제
     @Transactional
     public ResponseEntity<BookmarkDeleteResponseDto> deleteBookmark(Long bookmarkId, MemberDetails memberDetails) {
