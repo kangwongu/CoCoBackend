@@ -65,11 +65,11 @@
 - 중복된 회원정보가 있는지, 비밀번호가 틀리진 않았는지를 검사하고 통과하면, JWT 토큰을 클라이언트에 발급합니다.
 
 
-📌 [MemberController 코드확인](https://github.com/kangwongu/CoCoBackend/blob/main/src/main/java/com/igocst/coco/controller/MemberController.java#L25-L30)
+📌 [MemberController 코드확인](https://github.com/kangwongu/CoCoBackend/blob/main/src/main/java/com/igocst/coco/controller/MemberController.java#L23-L27)
 
-📌 [MemberService 코드확인](https://github.com/kangwongu/CoCoBackend/blob/main/src/main/java/com/igocst/coco/service/MemberService.java#L51-L87)
+📌 [MemberService 코드확인](https://github.com/kangwongu/CoCoBackend/blob/main/src/main/java/com/igocst/coco/service/MemberService.java#L50-L84)
 
-📌 [JwtTokenProvider 코드확인](https://github.com/kangwongu/CoCoBackend/blob/main/src/main/java/com/igocst/coco/security/jwt/JwtTokenProvider.java#L29-L40)
+📌 [JwtTokenProvider 코드확인](https://github.com/kangwongu/CoCoBackend/blob/main/src/main/java/com/igocst/coco/security/jwt/JwtTokenProvider.java#L28-L40)
 
 📌 [MemberRepository 코드확인](https://github.com/kangwongu/CoCoBackend/blob/main/src/main/java/com/igocst/coco/repository/MemberRepository.java)
 
@@ -89,7 +89,7 @@
 
 📌 [JwtTokenProvider 코드확인](https://github.com/kangwongu/CoCoBackend/blob/main/src/main/java/com/igocst/coco/security/jwt/JwtTokenProvider.java#L42-L96)
 
-📌 [SecurityConfiguration 코드확인](https://github.com/kangwongu/CoCoBackend/blob/main/src/main/java/com/igocst/coco/security/SecurityConfiguration.java#L80-L81)
+📌 [SecurityConfiguration 코드확인](https://github.com/kangwongu/CoCoBackend/blob/main/src/main/java/com/igocst/coco/security/SecurityConfiguration.java#L76-L77)
 
 📌 [MemberDetailsService 코드확인](https://github.com/kangwongu/CoCoBackend/blob/main/src/main/java/com/igocst/coco/security/MemberDetailsService.java)
 
@@ -116,11 +116,11 @@
 
 ![댓글순 정렬](https://user-images.githubusercontent.com/59812251/183607255-12a174d4-ff67-463d-aa43-eda2d7b720c5.png)
 
-📌 [PostController 코드확인](https://github.com/kangwongu/CoCoBackend/blob/main/src/main/java/com/igocst/coco/controller/PostController.java#L66-L76)
+📌 [PostController 코드확인](https://github.com/kangwongu/CoCoBackend/blob/main/src/main/java/com/igocst/coco/controller/PostController.java#L97-L101)
 
-📌 [PostService 코드확인](https://github.com/kangwongu/CoCoBackend/blob/main/src/main/java/com/igocst/coco/service/PostService.java#L266-L338)
+📌 [PostService 코드확인](https://github.com/kangwongu/CoCoBackend/blob/main/src/main/java/com/igocst/coco/service/PostService.java#L414-L435)
 
-📌 [PostRepository 코드확인](https://github.com/kangwongu/CoCoBackend/blob/77dcb6b55af6b6b02587e03919dfde0bc77a3f49/src/main/java/com/igocst/coco/repository/PostRepository.java#L17)
+📌 [PostRepository 코드확인](https://github.com/kangwongu/CoCoBackend/blob/main/src/main/java/com/igocst/coco/repository/PostRepository.java#L12)
 </div>
 </details>
 <details>
@@ -144,11 +144,11 @@
 
 ![댓글순 정렬](https://user-images.githubusercontent.com/59812251/183607255-12a174d4-ff67-463d-aa43-eda2d7b720c5.png)
 
-📌 [PostController 코드확인](https://github.com/kangwongu/CoCoBackend/blob/main/src/main/java/com/igocst/coco/controller/PostController.java#L101-L106)
+📌 [PostController 코드확인](https://github.com/kangwongu/CoCoBackend/blob/main/src/main/java/com/igocst/coco/controller/PostController.java#L62-L72)
 
-📌 [PostService 코드확인](https://github.com/kangwongu/CoCoBackend/blob/main/src/main/java/com/igocst/coco/service/PostService.java#L439-L462)
+📌 [PostService 코드확인](https://github.com/kangwongu/CoCoBackend/blob/main/src/main/java/com/igocst/coco/service/PostService.java#L254-L319)
 
-📌 [PostRepository 코드확인](https://github.com/kangwongu/CoCoBackend/blob/main/src/main/java/com/igocst/coco/repository/PostRepository.java#L14)
+📌 [PostRepository 코드확인](https://github.com/kangwongu/CoCoBackend/blob/main/src/main/java/com/igocst/coco/repository/PostRepository.java#L15)
 </div>
 </details>
 
