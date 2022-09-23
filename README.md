@@ -272,7 +272,7 @@ private void updateHits(Long postId, HttpServletRequest request, HttpServletResp
   - 만약 oldCookie에 값이 없다는 것은 어느 게시글에도 접근한 적이 없으므로, 접근한 게시글의 조회수를 1 증가시키고 게시글 id를 oldCookie에 추가합니다.
     - 이 시점부터 이 게시글에 여러 번 접근해도, 조회수가 증가하지 않습니다. (최초 접근시만 조회 수가 증가됩니다)
 
-> 쿠키가 '아이디 저장', '오늘 이 팝업을 보지않습니다'등에 활용된다는 것은 알고 있었는데, 이러한 부분에서도 활용된다는 것을 알게되었고, 쿠키의 활용 예시를 경험할 수 있었습니다.
+> 쿠키가 '아이디 저장', '오늘 이 팝업을 보지않습니다'등에 활용된다는 것은 알고 있었는데, 이러한 부분에서도 활용된다는 것을 알게되었고, 쿠키의 활용 예시를 경험할 수 있었습니다. <br>
 📌 [변경 코드 확인](https://github.com/BreedingMe/CoCoBackend/pull/176/files)
 
 </div>
@@ -510,7 +510,7 @@ public class PostController {
 
 > Dto의 사용이유를 알게 되었고, 적극적으로 사용해보며 Dto 사용에 익숙해지는 경험을 했습니다.
 
-📌 [Dto 패키지](https://github.com/BreedingMe/CoCoBackend/tree/refactoring/src/main/java/com/igocst/coco/dto)
+📌 [Dto 패키지](https://github.com/kangwongu/CoCoBackend/tree/main/src/main/java/com/igocst/coco/dto)
 
 </div>
 </details>
