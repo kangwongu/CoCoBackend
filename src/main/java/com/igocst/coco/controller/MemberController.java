@@ -11,10 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
 import java.io.IOException;
 import java.util.List;
-
 
 @RestController
 @RequiredArgsConstructor
@@ -25,7 +23,6 @@ public class MemberController {
     // 로그인
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto requestDto) {
-        // 로그인에 성공하면 클라이언트로, 생성한 JWT 토큰을 보낸다.
         return memberService.login(requestDto);
     }
 

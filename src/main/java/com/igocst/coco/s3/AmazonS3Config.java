@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class AmazonS3Config {
-    //AmazonS3Client를 Build 해주는 cofig 생성
     @Value("${cloud.aws.credentials.access-key}")
     private String accessKey;
 

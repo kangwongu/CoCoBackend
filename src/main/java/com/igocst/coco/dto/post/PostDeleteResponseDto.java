@@ -4,7 +4,11 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Builder
 public class PostDeleteResponseDto {
     private String status;
+
+    @Builder
+    public PostDeleteResponseDto(String status) {
+        this.status = status;
+    }
 }

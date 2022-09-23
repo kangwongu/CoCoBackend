@@ -1,12 +1,14 @@
 package com.igocst.coco.dto.member;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
 
-@Builder
-@Setter
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
 public class MemberUpdateResponseDto {
     private String status;
+
+    @Builder
+    public MemberUpdateResponseDto(String status) {
+        this.status = status;
+    }
 }
