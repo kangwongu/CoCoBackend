@@ -393,14 +393,18 @@ private void updateHits(Long postId, HttpServletRequest request, HttpServletResp
 
 <br>
 
-### 엔티티 삭제 시, 외래키 참조 무결성 문제 해결
+### Cascade 옵션 사용 문제
+    
+    문제 1 : 엔티티 삭제 시, 외래키 참조 무결성 문제
+    문제 2 : 연관관계 맺어진 테이블 컬럼 삭제 시, 양 테이블값이 같이 삭제되는 문제
 
-:bookmark: [블로그에 정리했던 내용](https://velog.io/@kwg527/Spring-JPA-%EC%97%94%ED%8B%B0%ED%8B%B0-%EC%82%AD%EC%A0%9C-%EC%8B%9C-%EC%99%B8%EB%9E%98%ED%82%A4-%EC%B0%B8%EC%A1%B0-%EB%AC%B4%EA%B2%B0%EC%84%B1-%EB%AC%B8%EC%A0%9C)
+:bookmark: [블로그에 정리했던 내용 (문제 1)](https://velog.io/@kwg527/Spring-JPA-%EC%97%94%ED%8B%B0%ED%8B%B0-%EC%82%AD%EC%A0%9C-%EC%8B%9C-%EC%99%B8%EB%9E%98%ED%82%A4-%EC%B0%B8%EC%A1%B0-%EB%AC%B4%EA%B2%B0%EC%84%B1-%EB%AC%B8%EC%A0%9C)  
+:bookmark: [블로그에 정리했던 내용 (문제 2)](https://velog.io/@kwg527/Spring-JPA-%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84-%EB%A7%BA%EC%96%B4%EC%A7%84-%ED%85%8C%EC%9D%B4%EB%B8%94-%EC%BB%AC%EB%9F%BC-%EC%82%AD%EC%A0%9C-%EC%8B%9C-%EC%96%91-%ED%85%8C%EC%9D%B4%EB%B8%94%EA%B0%92%EC%9D%B4-%EA%B0%99%EC%9D%B4-%EC%82%AD%EC%A0%9C%EB%90%98%EB%8A%94-%EB%AC%B8%EC%A0%9C-%EB%B0%9C%EC%83%9D)
 
-- 문제
+- 문제 1
   - 회원 엔티티 삭제 시, 회원 PK를 FK로 사용하는 게시글, 댓글, 쪽지 엔티티에서 외래키 참조 무결성 문제 발생
   
-- 문제 해결
+- 문제 해결 1
   - 회원 엔티티에서 1대N 관계로 매핑되어 있는 필드에 cascade = CascadeType.REMOVE 를 붙여서 해결
 
 <br>
@@ -463,10 +467,62 @@ private List<Message> sendMessage = new ArrayList<>();
 ```
 - cascade = CascadeType.REMOVE를 붙여서 회원 삭제 시, 하위 엔티티도 같이 삭제되도록 함
 
-> cascade옵션에 대해 좀 더 친숙해질 수 있는 경험이 되었습니다. <br>
-cascade가 어떤 옵션인지, 어떨 때 사용해야 하는지를 알게 되었습니다.
+📌 [변경 코드 확인 (문제 1)](https://github.com/BreedingMe/CoCoBackend/commit/206d14610091e9ce167ac6894ec89d2dd83cfe87#diff-35a953aeb8df44c6f295f84560ebcb962a41f8bea1769d74816031c248bb80cdL42-R53)
 
-📌 [변경 코드 확인](https://github.com/BreedingMe/CoCoBackend/commit/206d14610091e9ce167ac6894ec89d2dd83cfe87#diff-35a953aeb8df44c6f295f84560ebcb962a41f8bea1769d74816031c248bb80cdL42-R53)
+</div>
+</details>
+    
+<br>
+    
+- 문제 2
+  - 특정 Member가 작성한 Post를 삭제할 때, Post를 삭제하면 Post를 작성한 Member도 함께 삭제되는 문제 발생
+  
+- 문제 해결 2
+  - Post 엔티티에서 Member 필드에 cascade 옵션이 설정되어 있었음
+    - cascade 옵션을 해제
+
+<br>
+
+<details>
+<summary><b>:bulb: 기존 방식</b></summary>
+<div markdown="1">
+
+<br>
+
+| Post.java
+``` java
+...
+@ManyToOne(cascade = CascadeType.ALL)
+@JoinColumn(name = "MEMBER_ID")
+private Member member;
+...
+```
+- Member 필드에 cascade 옵션이 붙어있다
+    - Post 삭제 시, Post를 작성한 Member도 함께 삭제된다
+
+</div>
+</details>
+
+<br>
+
+<details>
+<summary><b>:bulb: 개선한 방식</b></summary>
+<div markdown="1">
+
+<br>
+
+| Post.java
+``` java
+...
+@ManyToOne()
+@JoinColumn(name = "MEMBER_ID")
+private Member member;
+...
+```
+- Member 필드에 적용했던 cascade 옵션을 해제함으로써 문제 해결
+
+> 프로젝트 중 cascade 옵션에 관련한 2가지 문제를 겪으면서, cascade옵션에 대해 좀 더 친숙해질 수 있는 경험이 되었습니다. <br>
+cascade가 어떤 옵션인지, 어떨 때 사용해야 하는지를 알게 되었습니다.
 
 </div>
 </details>
