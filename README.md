@@ -273,6 +273,7 @@ private void updateHits(Long postId, HttpServletRequest request, HttpServletResp
     - 이 시점부터 이 게시글에 여러 번 접근해도, 조회수가 증가하지 않습니다. (최초 접근시만 조회 수가 증가됩니다)
 
 > 쿠키가 '아이디 저장', '오늘 이 팝업을 보지않습니다'등에 활용된다는 것은 알고 있었는데, 이러한 부분에서도 활용된다는 것을 알게되었고, 쿠키의 활용 예시를 경험할 수 있었습니다. <br>
+
 📌 [변경 코드 확인](https://github.com/BreedingMe/CoCoBackend/pull/176/files)
 
 </div>
@@ -511,6 +512,93 @@ public class PostController {
 > Dto의 사용이유를 알게 되었고, 적극적으로 사용해보며 Dto 사용에 익숙해지는 경험을 했습니다.
 
 📌 [Dto 패키지](https://github.com/kangwongu/CoCoBackend/tree/main/src/main/java/com/igocst/coco/dto)
+
+</div>
+</details>
+
+<br>
+
+### 프로필 이미지 첨부 시, 이미지 파일 이외의 파일도 첨부되는 문제 해결
+
+:bookmark: [블로그에 정리했던 내용](https://velog.io/@kwg527/Spring-Apache-Tika-%EC%82%AC%EC%9A%A9%ED%95%B4-%EC%9D%B4%EB%AF%B8%EC%A7%80-%ED%8C%8C%EC%9D%BC%EB%A7%8C-%ED%95%84%ED%84%B0%EB%A7%81%ED%95%98%EA%B8%B0)
+
+- 문제
+  - 프로필 이미지 변경 시, 이미지 파일이 아닌 다른 파일도 첨부가 된다는 사용자 피드백을 받음
+  
+- 문제 해결
+  - Apache Tika 라이브러리를 통해 이미지 파일만 걸러내서 첨부할 수 있도록 수정
+
+<br>
+
+<details>
+<summary><b>:bulb: 개선한 방식</b></summary>
+<div markdown="1">
+
+<br>
+
+FileUtils 클래스를 만들고, Apache Tika 라이브러리를 사용해 이미지 파일만 걸러냈다.
+
+| FileUtils.java
+``` java
+public class FileUtils {
+
+    private static final Tika tika = new Tika();
+
+    public static boolean validImgFile(InputStream inputStream) {
+        try {
+            List<String> notValidTypeList = Arrays.asList("image/jpeg", "image/pjpeg", "image/png", "image/gif", "image/bmp", "image/x-windows-bmp");
+
+            String mimeType = tika.detect(inputStream);
+            boolean isValid = notValidTypeList.stream().anyMatch(notValidType -> notValidType.equalsIgnoreCase(mimeType));
+
+            return isValid;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+}
+```
+
+<br>
+
+| MemberService.java
+``` java
+public class MemberService {
+    ...
+    @Transactional
+    public ResponseEntity<MemberUpdateResponseDto> updateMember(MemberUpdateRequestDto memberUpdateRequestDto,
+                                                MemberDetails memberDetails) throws IOException {
+
+        Optional<Member> memberOptional = memberRepository.findById(memberDetails.getMember().getId());
+        Member member = memberOptional.get();
+
+        MultipartFile file = memberUpdateRequestDto.getFile();
+        if (file != null) {
+            InputStream inputStream = file.getInputStream();
+
+            boolean isValid = FileUtils.validImgFile(inputStream);
+            if(!isValid) {
+                return new ResponseEntity<>(
+                        MemberUpdateResponseDto.builder().status(StatusMessage.BAD_REQUEST).build(),
+                        HttpStatus.valueOf(StatusCode.BAD_REQUEST));
+            }
+            else {
+                String fileUrl = s3Service.upload(file, "profileImage", memberDetails);
+                member.updateProfileImage(fileUrl);
+            }
+        }
+        ...
+    }
+    ...
+```
+- 이미지 파일만 걸러내고, 첨부또한 이미지 파일만 가능하도록 수정해서 해결
+
+> 라이브러리를 직접 임포트하고 사용해보며, 경험해볼 수 있었습니다. <br>
+라이브러리 사용을 통해, 다양한 라이브러리를 알고, 활용할 수 있으면 개발을 더 편리하게 할 수 있겠다는, 개발에 대한 시각이 넓어질 수 있는 경험이었습니다.
+
+📌 [변경 코드 확인 (FileUtils)](https://github.com/BreedingMe/CoCoBackend/pull/157/files#diff-b7c54f3e34e0e76e00e7e9d8f057c575fca52dd26945a33dbfbb7efb6e8df005R1-R29)  
+📌 [변경 코드 확인 (MemberService)](https://github.com/BreedingMe/CoCoBackend/pull/157/files#diff-6a2d62e7a736e9bff89cac6ce341657f2c2aac483965976d26d88997ed264e45L166-R186)
 
 </div>
 </details>
