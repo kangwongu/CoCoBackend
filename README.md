@@ -396,7 +396,7 @@ private void updateHits(Long postId, HttpServletRequest request, HttpServletResp
 ### Cascade 옵션 사용 문제
     
     문제 1 : 엔티티 삭제 시, 외래키 참조 무결성 문제
-    문제 2 : 연관관계 맺어진 테이블 컬럼 삭제 시, 양 테이블값이 같이 삭제되는 문제
+    문제 2 : cascade 옵션으로 인해 연관관계 매핑된 필드 삭제 시, 양 필드의 값이 같이 삭제되는 문제
 
 :bookmark: [블로그에 정리했던 내용 (문제 1)](https://velog.io/@kwg527/Spring-JPA-%EC%97%94%ED%8B%B0%ED%8B%B0-%EC%82%AD%EC%A0%9C-%EC%8B%9C-%EC%99%B8%EB%9E%98%ED%82%A4-%EC%B0%B8%EC%A1%B0-%EB%AC%B4%EA%B2%B0%EC%84%B1-%EB%AC%B8%EC%A0%9C)  
 :bookmark: [블로그에 정리했던 내용 (문제 2)](https://velog.io/@kwg527/Spring-JPA-%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84-%EB%A7%BA%EC%96%B4%EC%A7%84-%ED%85%8C%EC%9D%B4%EB%B8%94-%EC%BB%AC%EB%9F%BC-%EC%82%AD%EC%A0%9C-%EC%8B%9C-%EC%96%91-%ED%85%8C%EC%9D%B4%EB%B8%94%EA%B0%92%EC%9D%B4-%EA%B0%99%EC%9D%B4-%EC%82%AD%EC%A0%9C%EB%90%98%EB%8A%94-%EB%AC%B8%EC%A0%9C-%EB%B0%9C%EC%83%9D)
@@ -475,7 +475,7 @@ private List<Message> sendMessage = new ArrayList<>();
 <br>
     
 - 문제 2
-  - 특정 회원이 작성한 게시글을 삭제할 때, 마지막 게시글을 삭제하면 게시글을 작성한 회원도 함께 삭제되는 문제가 발생하였습니다.
+  - 특정 회원이 작성한 게시글을 삭제할 때, 특정 회원의 마지막 게시글을 삭제하면 게시글을 작성한 회원도 함께 삭제되는 문제가 발생하였습니다.
   
 - 문제 해결 2
   - 게시글 엔티티에서 Member 필드에 cascade 옵션이 설정되어 있었습니다.
