@@ -651,8 +651,8 @@ public class MemberService {
 ```
 - 이미지 파일만 걸러내고, 첨부또한 이미지 파일만 가능하도록 수정해서 해결하였습니다.
 
-> 라이브러리를 직접 임포트하고 사용해보며, 경험해볼 수 있었습니다. <br>
-라이브러리 사용을 통해, 다양한 라이브러리를 알고, 활용할 수 있으면 개발을 더 편리하게 할 수 있겠다는, 개발에 대한 시각이 넓어질 수 있는 경험이었습니다.
+> 직접 라이브러리 의존성을 추가하고 사용해보며, 경험해볼 수 있었습니다. <br>
+라이브러리 사용을 통해, 다양한 라이브러리를 알고, 활용할 수 있으면 개발을 더 편리하게 할 수 있다는 것을 알게 되었습니다.
 
 📌 [변경 코드 확인 (FileUtils)](https://github.com/BreedingMe/CoCoBackend/pull/157/files#diff-b7c54f3e34e0e76e00e7e9d8f057c575fca52dd26945a33dbfbb7efb6e8df005R1-R29)  
 📌 [변경 코드 확인 (MemberService)](https://github.com/BreedingMe/CoCoBackend/pull/157/files#diff-6a2d62e7a736e9bff89cac6ce341657f2c2aac483965976d26d88997ed264e45L166-R186)
